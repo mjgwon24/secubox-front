@@ -27,10 +27,10 @@ export const RightSidebar = () => {
   };
 
   return (
-    <div className="w-full max-w-md bg-[#1C1C1C] text-white space-y-8  border border-[#3C3C3C]">
+    <div className="w-full max-w-sm bg-[#1C1C1C] text-white space-y-8 border border-[#3C3C3C]">
       {/* Attack Section */}
       <div className="bg-[#26292B] flex items-center justify-between px-4 py-3 border border-[#3C3C3C] ">
-        <h2 className="text-xl font-medium ">Attack</h2>
+        <h2 className="text-xl weight-500 ">Attack</h2>
       </div>
       <div className="space-y-4 pl-6 pr-6">
         <div className="space-y-3">
@@ -42,7 +42,7 @@ export const RightSidebar = () => {
 
       {/* Defense Section */}
       <div className="bg-[#26292B] flex items-center justify-between px-4 py-3 border border-[#3C3C3C]">
-        <h2 className="text-xl font-medium ">Defense</h2>
+        <h2 className="text-xl weight-500 ">Defense</h2>
       </div>
 
       <div className="space-y-4  pl-6 pr-6">
