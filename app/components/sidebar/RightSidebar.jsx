@@ -27,12 +27,12 @@ export const RightSidebar = () => {
   };
 
   return (
-    <div className="w-full max-w-sm bg-[#1C1C1C] text-white space-y-8 border border-[#3C3C3C]">
+    <div className="w-[700px] bg-[#1C1C1C] text-white space-y-8 border border-[#3C3C3C]">
       {/* Attack Section */}
       <div className="bg-[#26292B] flex items-center justify-between px-4 py-3 border border-[#3C3C3C] ">
-        <h2 className="text-xl weight-500 ">Attack</h2>
+          <h2 className="weight-600 text-[#D3D3D3] select-none">Attack</h2>
       </div>
-      <div className="space-y-4 pl-6 pr-6">
+        <div className="space-y-4 pl-6 pr-6">
         <div className="space-y-3">
           {attacks.map((attack) => (
             <AttackButton key={attack.id} name={attack.name} />
@@ -42,10 +42,10 @@ export const RightSidebar = () => {
 
       {/* Defense Section */}
       <div className="bg-[#26292B] flex items-center justify-between px-4 py-3 border border-[#3C3C3C]">
-        <h2 className="text-xl weight-500 ">Defense</h2>
+          <h2 className="weight-600 text-[#D3D3D3] select-none">Defense</h2>
       </div>
 
-      <div className="space-y-4  pl-6 pr-6">
+        <div className="space-y-4  pl-6 pr-6">
         <div className="space-y-3">
           {defenses.map((defense) => (
             <DefenseToggle
@@ -58,12 +58,12 @@ export const RightSidebar = () => {
 
           {/* Rate Limiting Control */}
           <div className="flex items-center justify-between w-full p-4 bg-[#2A2A2A] rounded-lg">
-            <span>Rate Limiting</span>
+            <span className="text-[#C5C5C5] text-[14px]">Rate Limiting</span>
             <button
-              className="p-2 hover:bg-[#333333] rounded transition-colors mr-2"
+              className="p-1 hover:bg-[#333333] rounded transition-colors mr-2"
               aria-label="Configure rate limiting"
             >
-              <Sliders className="w-5 h-5" />
+              <Sliders className="w-4 h-4" />
             </button>
           </div>
         </div>
