@@ -1,4 +1,3 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { LeftSidebar } from "@/app/components/sidebar/LeftSidebar";
 import { RightSidebar } from "@/app/components/sidebar/RightSidebar";
