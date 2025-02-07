@@ -27,12 +27,12 @@ export const RightSidebar = () => {
   };
 
   return (
-    <div className="w-[700px] bg-[#1C1C1C] text-white space-y-8 border border-[#3C3C3C]">
+    <div className="w-[700px] bg-[#1C1C1C] text-white space-y-8 border border-[#3C3C3C] max-h-screen overflow-y-auto custom-scrollbar">
       {/* Attack Section */}
-      <div className="bg-[#26292B] flex items-center justify-between px-4 py-3 border border-[#3C3C3C] ">
-          <h2 className="weight-600 text-[#D3D3D3] select-none">Attack</h2>
+      <div className="bg-[#26292B] flex items-center justify-between px-4 py-3 border border-[#3C3C3C]">
+        <h2 className="weight-600 text-[#D3D3D3] select-none">Attack</h2>
       </div>
-        <div className="space-y-4 pl-6 pr-6">
+      <div className="space-y-4 pl-6 pr-6">
         <div className="space-y-3">
           {attacks.map((attack) => (
             <AttackButton key={attack.id} name={attack.name} />
@@ -42,10 +42,9 @@ export const RightSidebar = () => {
 
       {/* Defense Section */}
       <div className="bg-[#26292B] flex items-center justify-between px-4 py-3 border border-[#3C3C3C]">
-          <h2 className="weight-600 text-[#D3D3D3] select-none">Defense</h2>
+        <h2 className="weight-600 text-[#D3D3D3] select-none">Defense</h2>
       </div>
-
-        <div className="space-y-4  pl-6 pr-6">
+      <div className="space-y-4 pl-6 pr-6">
         <div className="space-y-3">
           {defenses.map((defense) => (
             <DefenseToggle
