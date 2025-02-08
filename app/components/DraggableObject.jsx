@@ -1,38 +1,42 @@
 "use client";
 
 import { useDrag } from "react-dnd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function DraggableObject({ id, name, initialX, initialY }) {
-    const [position, setPosition] = useState({ x: initialX, y: initialY });
-
+export default function DraggableObject({ iconKey, id, name, initialX, initialY, onDragEnd, onDoubleClick }) {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: "OBJECT",
-        item: { id, name },
+        item: { iconKey, id, name },
         collect: (monitor) => ({
-            isDragging: monitor.isDragging()
-        })
+            isDragging: monitor.isDragging(),
+        }),
     }));
 
-    const handleDrag = (event) => {
-        setPosition({
-            x: event.clientX - 20,
-            y: event.clientY - 20
-        });
+    const [position, setPosition] = useState({ x: initialX, y: initialY });
+
+    useEffect(() => {
+        setPosition({ x: initialX, y: initialY });
+    }, [initialX, initialY]);
+
+    const handleDragEnd = (e) => {
+        const x = e.clientX - 250;
+        const y = e.clientY - 75;
+        setPosition({ x, y });
+        onDragEnd(id, x, y);
     };
 
     return (
         <div
             ref={drag}
-            className="absolute cursor-move"
+            className={`absolute cursor-move ${isDragging ? "opacity-50" : ""}`}
             style={{
-                top: `${position.y}px`,
                 left: `${position.x}px`,
-                opacity: isDragging ? 0.5 : 1
+                top: `${position.y}px`,
             }}
-            onMouseMove={(e) => e.buttons === 1 && handleDrag(e)}
+            onMouseUp={handleDragEnd}
+            onDoubleClick={() => onDoubleClick(id)}
         >
-            <img src={`/icons/objects/${id}.png`} alt={name} className="h-10 w-10" />
+            <img src={`/icons/objects/${iconKey}.png`} alt={iconKey} className="h-7"/>
         </div>
     );
 }
