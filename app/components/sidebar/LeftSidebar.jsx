@@ -2,19 +2,20 @@
 
 import { useState } from "react";
 import { ObjectButton } from "@/app/components/sidebar/ui/leftSidebar/ObjectButton";
+import { v4 as uuidv4 } from "uuid";
 
 export const LeftSidebar = () => {
   const [objects] = useState([
-    { id: "router", name: "router" },
-    { id: "switch", name: "switch" },
-    { id: "cloud", name: "cloud" },
-    { id: "lan-cable", name: "lan cable" },
-    { id: "fabric-net", name: "fabric net" },
-    { id: "pc", name: "pc" },
-    { id: "utm", name: "utm" },
-    { id: "server", name: "server" },
-    { id: "internet", name: "internet" },
-    { id: "firewall", name: "firewall" },
+    { id: "router", name: "Router" },
+    { id: "switch", name: "Switch" },
+    { id: "cloud", name: "Cloud" },
+    { id: "lan-cable", name: "LAN Cable" },
+    { id: "fabric-net", name: "Fabric Net" },
+    { id: "pc", name: "PC" },
+    { id: "utm", name: "UTM" },
+    { id: "server", name: "Server" },
+    { id: "internet", name: "Internet" },
+    { id: "firewall", name: "Firewall" }
   ]);
 
   return (
@@ -26,11 +27,14 @@ export const LeftSidebar = () => {
       <div className="px-4">
         <div className="flex flex-row flex-wrap gap-4">
           {objects.map((object) => (
-            <ObjectButton
-              key={object.id}
-              iconKey={object.id}
-              name={object.name}
-            />
+              <ObjectButton
+                  key={object.id}
+                  iconKey={object.id}
+                  name={object.name}
+                  onDragStart={() => (
+                      {iconKey: object.id, id: uuidv4(), name: object.name}
+                  )}
+              />
           ))}
         </div>
       </div>
