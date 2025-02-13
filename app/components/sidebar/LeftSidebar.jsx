@@ -15,7 +15,7 @@ export const LeftSidebar = () => {
     { id: "utm", name: "UTM" },
     { id: "server", name: "Server" },
     { id: "internet", name: "Internet" },
-    { id: "firewall", name: "Firewall" }
+    { id: "firewall", name: "Firewall" },
   ]);
 
   return (
@@ -27,14 +27,16 @@ export const LeftSidebar = () => {
       <div className="px-4">
         <div className="flex flex-row flex-wrap gap-4">
           {objects.map((object) => (
-              <ObjectButton
-                  key={object.id}
-                  iconKey={object.id}
-                  name={object.name}
-                  onDragStart={() => (
-                      {iconKey: object.id, id: uuidv4(), name: object.name}
-                  )}
-              />
+            <ObjectButton
+              key={object.id}
+              iconKey={object.id}
+              name={object.name}
+              onDragStart={() => ({
+                iconKey: object.id,
+                id: uuidv4(),
+                name: object.name,
+              })}
+            />
           ))}
         </div>
       </div>
