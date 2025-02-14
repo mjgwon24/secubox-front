@@ -56,7 +56,7 @@ export const LogBar = () => {
             <div className="flex flex-row items-center justify-between border-t border-[#6C6C6C] bg-[#26292B] px-5 py-3">
                 <p className="weight-600 text-[#D3D3D3] select-none">Log</p>
                 <button onClick={() => setIsOpen(!isOpen)} className="text-[#D3D3D3] cursor-pointer">
-                    {isOpen ? <ChevronUp size={20}/> : <ChevronDown size={20}/>}
+                    {isOpen ? <ChevronDown size={20}/> : <ChevronUp size={20}/>}
                 </button>
             </div>
 
