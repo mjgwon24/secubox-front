@@ -67,7 +67,7 @@ export default function Home() {
             <div className="absolute top-3 left-3 bg-[rgba(0,0,0,0.7)] text-white p-2 rounded-lg z-50">
                 <p className="text-xs font-semibold text-gray-300 pb-2 select-none">Object Count</p>
                 {Object.entries(itemCounts).map(([name, count]) => (
-                    <p key={name} className="text-xs text-gray-400">{name}: {count}</p>
+                    <p key={name} className="text-xs text-gray-400 select-none">{name}: {count}</p>
                 ))}
             </div>
 
