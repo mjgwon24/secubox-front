@@ -50,7 +50,7 @@ export default function DraggableCable({ id, initialX, initialY, onDoubleClick }
     return (
         <>
             <div
-                className="absolute border border-amber-200"
+                className="absolute"
                 style={{
                     left: `${minX}px`,
                     top: `${minY}px`,
@@ -79,10 +79,10 @@ export default function DraggableCable({ id, initialX, initialY, onDoubleClick }
                 />
 
                 <rect
-                    x={start.x - 4}
-                    y={start.y - 4}
-                    width="8"
-                    height="8"
+                    x={start.x - 3}
+                    y={start.y - 3}
+                    width="6"
+                    height="6"
                     fill="white"
                     stroke="black"
                     className="cursor-pointer pointer-events-auto"
@@ -90,10 +90,10 @@ export default function DraggableCable({ id, initialX, initialY, onDoubleClick }
                 />
 
                 <rect
-                    x={end.x - 4}
-                    y={end.y - 4}
-                    width="8"
-                    height="8"
+                    x={end.x - 3}
+                    y={end.y - 3}
+                    width="6"
+                    height="6"
                     fill="white"
                     stroke="black"
                     className="cursor-pointer pointer-events-auto"
