@@ -16,6 +16,8 @@ export const LeftSidebar = () => {
     { id: "server", name: "Server" },
     { id: "internet", name: "Internet" },
     { id: "firewall", name: "Firewall" },
+    { id: "gmail", name: "Gmail" },
+    { id: "google-drive", name: "Google Drive" },
   ]);
 
   return (
