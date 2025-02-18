@@ -23,6 +23,9 @@ const Resizable = ({ id, x, y, width, height, onResize, onDoubleClick }) => {
           y: e.clientY - initialMousePosition.current.y,
         });
       } else if (isResizing) {
+        const limitedX = clamp(clientX - 250, 0, window.innerWidth - 340 - 250);
+        const limitedY = clamp(clientY - 75, 0, window.innerHeight - 55 - 75);
+        setPosition(limitedX, limitedY);
         const newWidth = Math.max(e.clientX - position.x, 50); // minimum width 50px
         const newHeight = Math.max(e.clientY - position.y, 50); // minimum height 50px
         setSize({ width: newWidth, height: newHeight });
