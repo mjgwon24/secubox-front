@@ -2,32 +2,75 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const Resizable = ({ id, x, y, width, height, onResize, onDoubleClick }) => {
+  const boundaryPaddingX = 250;
+  const boundaryPaddingY = 75;
+  const elementMinWidth = 50;
+  const elementMinHeight = 50;
+
+  const [maxWidth, setMaxWidth] = useState(
+    window.innerWidth - boundaryPaddingX * 2
+  );
+  const [maxHeight, setMaxHeight] = useState(
+    window.innerHeight - boundaryPaddingY * 2
+  );
+
   const [position, setPosition] = useState({ x, y });
   const [size, setSize] = useState({ width, height });
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const ref = useRef(null);
-  const initialMousePosition = useRef({ x: 0, y: 0 }); // Track initial mouse position
+  const initialMousePosition = useRef({ x: 0, y: 0 });
+
+  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+  // 윈도우 크기 변경 시 최대 크기 업데이트
+  useEffect(() => {
+    const updateMaxSize = () => {
+      setMaxWidth(window.innerWidth - boundaryPaddingX * 2);
+      setMaxHeight(window.innerHeight - boundaryPaddingY * 2);
+    };
+
+    window.addEventListener("resize", updateMaxSize);
+    return () => window.removeEventListener("resize", updateMaxSize);
+  }, []);
 
   useEffect(() => {
-    setPosition({ x, y });
-    setSize({ width, height });
-  }, [x, y, width, height]);
+    setPosition({
+      x: clamp(x, boundaryPaddingX, maxWidth - width),
+      y: clamp(y, boundaryPaddingY, maxHeight - height),
+    });
+    setSize({
+      width: clamp(width, elementMinWidth, maxWidth),
+      height: clamp(height, elementMinHeight, maxHeight),
+    });
+  }, [x, y, width, height, maxWidth, maxHeight]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (isDragging) {
-        // Update position based on mouse movement and initial mouse position
-        setPosition({
-          x: e.clientX - initialMousePosition.current.x,
-          y: e.clientY - initialMousePosition.current.y,
-        });
+        const limitedX = clamp(
+          e.clientX - boundaryPaddingX,
+          0,
+          window.innerWidth - boundaryPaddingX * 2 - size.width
+        );
+        const limitedY = clamp(
+          e.clientY - boundaryPaddingY,
+          0,
+          window.innerHeight - boundaryPaddingY * 2 - size.height
+        );
+
+        setPosition({ x: limitedX, y: limitedY });
       } else if (isResizing) {
-        const limitedX = clamp(clientX - 250, 0, window.innerWidth - 340 - 250);
-        const limitedY = clamp(clientY - 75, 0, window.innerHeight - 55 - 75);
-        setPosition(limitedX, limitedY);
-        const newWidth = Math.max(e.clientX - position.x, 50); // minimum width 50px
-        const newHeight = Math.max(e.clientY - position.y, 50); // minimum height 50px
+        const newWidth = clamp(
+          e.clientX - position.x,
+          elementMinWidth,
+          maxWidth
+        );
+        const newHeight = clamp(
+          e.clientY - position.y,
+          elementMinHeight,
+          maxHeight
+        );
         setSize({ width: newWidth, height: newHeight });
         onResize(id, newWidth, newHeight);
       }
@@ -38,7 +81,6 @@ const Resizable = ({ id, x, y, width, height, onResize, onDoubleClick }) => {
       setIsResizing(false);
     };
 
-    // Add mousemove and mouseup event listeners
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
 
@@ -46,11 +88,19 @@ const Resizable = ({ id, x, y, width, height, onResize, onDoubleClick }) => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging, isResizing, position, id, onResize]);
+  }, [
+    isDragging,
+    isResizing,
+    position,
+    size,
+    maxWidth,
+    maxHeight,
+    id,
+    onResize,
+  ]);
 
   const handleMouseDown = (e) => {
     if (!isResizing) {
-      // Calculate initial mouse position relative to the element
       initialMousePosition.current = {
         x: e.clientX - position.x,
         y: e.clientY - position.y,
@@ -71,7 +121,7 @@ const Resizable = ({ id, x, y, width, height, onResize, onDoubleClick }) => {
         top: `${position.y}px`,
         width: `${size.width}px`,
         height: `${size.height}px`,
-        backgroundColor: "transparent", // No fill
+        backgroundColor: "transparent",
       }}
       onMouseDown={handleMouseDown}
       onDoubleClick={() => onDoubleClick(id)}
@@ -79,7 +129,7 @@ const Resizable = ({ id, x, y, width, height, onResize, onDoubleClick }) => {
       <div
         className="absolute bottom-0 right-0 w-6 h-6 bg-gray-500 cursor-se-resize"
         onMouseDown={(e) => {
-          e.stopPropagation(); // Prevent the mouse down event from triggering drag
+          e.stopPropagation();
           setIsResizing(true);
         }}
       />
