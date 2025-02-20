@@ -27,7 +27,7 @@ export const RightSidebar = () => {
   };
 
   return (
-    <div className="w-[700px] bg-[#1C1C1C] text-white space-y-8 border border-[#3C3C3C] max-h-screen overflow-y-auto custom-scrollbar">
+    <div className="max-w-[250px] bg-[#1C1C1C] text-white space-y-8 border border-[#3C3C3C] max-h-screen overflow-y-auto custom-scrollbar">
       {/* Attack Section */}
       <div className="bg-[#26292B] flex items-center justify-between px-4 py-3 border border-[#3C3C3C]">
         <h2 className="weight-600 text-[#D3D3D3] select-none">Attack</h2>
