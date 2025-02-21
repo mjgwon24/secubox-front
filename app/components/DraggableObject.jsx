@@ -28,7 +28,7 @@ export default function DraggableObject({ iconKey, id, name, initialX, initialY,
     return (
         <div
             ref={drag}
-            className={`absolute cursor-move ${isDragging ? "opacity-50" : ""}`}
+            className={`absolute z-10 cursor-move ${isDragging ? "opacity-50" : ""}`}
             style={{
                 left: `${position.x}px`,
                 top: `${position.y}px`,

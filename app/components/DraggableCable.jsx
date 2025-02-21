@@ -1,17 +1,34 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 
-export default function DraggableCable({
-  id,
-  initialX,
-  initialY,
-  onDoubleClick,
-}) {
-  const [start, setStart] = useState({ x: initialX, y: initialY });
-  const [end, setEnd] = useState({ x: initialX + 100, y: initialY + 100 });
+export default function DraggableCable({id, initialX, initialY, onDoubleClick, droppedItems,}) {
+    const [start, setStart] = useState({ x: initialX, y: initialY });
+    const [end, setEnd] = useState({ x: initialX + 100, y: initialY + 100 });
+    const [isStartConnected, setIsStartConnected] = useState(false);
+    const [isEndConnected, setIsEndConnected] = useState(false);
 
-  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    const DISTANCE_THRESHOLD = 30;
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    useEffect(() => {
+        const checkConnection = () => {
+            const isCloseToObject = (x, y) => {
+                return droppedItems.some(
+                    (item) =>
+                        item.name !== "Fabric Net" &&
+                        item.name !== "LAN Cable" &&
+                        Math.abs(item.x + 20 - x) < DISTANCE_THRESHOLD &&
+                        Math.abs(item.y + 20 - y) < DISTANCE_THRESHOLD
+                );
+            };
+
+            setIsStartConnected(isCloseToObject(start.x, start.y));
+            setIsEndConnected(isCloseToObject(end.x, end.y));
+        };
+
+        checkConnection();
+    }, [start, end, droppedItems]);
 
   const handleMove = useCallback((type, e) => {
     const { clientX, clientY, movementX, movementY } = e;
@@ -73,10 +90,8 @@ export default function DraggableCable({
         onDoubleClick={() => onDoubleClick(id)}
       />
 
-      {/* 절대 위치로 독립된 SVG */}
       <svg
-        // className="absolute"
-        className="absolute pointer-events-none"
+        className="absolute z-10 pointer-events-none"
         style={{ left: 0, top: 0, width: "100%", height: "100%" }}
       >
         <line
@@ -85,7 +100,7 @@ export default function DraggableCable({
           x2={end.x}
           y2={end.y}
           stroke="#C3C3C3"
-          strokeWidth="2"
+          strokeWidth="1"
           className="cursor-move pointer-events-auto"
           onDoubleClick={() => onDoubleClick(id)}
           onMouseDown={handleMouseDown("line")}
@@ -96,7 +111,7 @@ export default function DraggableCable({
           y={start.y - 3}
           width="6"
           height="6"
-          fill="white"
+          fill={isStartConnected ? "#1769ff" : "white"}
           stroke="black"
           className="cursor-pointer pointer-events-auto"
           onMouseDown={handleMouseDown("start")}
@@ -107,7 +122,7 @@ export default function DraggableCable({
           y={end.y - 3}
           width="6"
           height="6"
-          fill="white"
+          fill={isEndConnected ? "#1769ff" : "white"}
           stroke="black"
           className="cursor-pointer pointer-events-auto"
           onMouseDown={handleMouseDown("end")}

@@ -98,11 +98,12 @@ export default function Home() {
           />
         ) : item.name === "LAN Cable" ? (
           <DraggableCable
-            key={item.id}
-            id={item.id}
-            initialX={item.x}
-            initialY={item.y}
-            onDoubleClick={() => handleRemoveItem(item.id)}
+              key={item.id}
+              id={item.id}
+              initialX={item.x}
+              initialY={item.y}
+              onDoubleClick={() => handleRemoveItem(item.id)}
+              droppedItems={droppedItems}
           />
         ) : (
           <DraggableObject
