@@ -100,7 +100,7 @@ export default function DraggableCable({id, initialX, initialY, onDoubleClick, d
           x2={end.x}
           y2={end.y}
           stroke="#C3C3C3"
-          strokeWidth="1"
+          strokeWidth="2"
           className="cursor-move pointer-events-auto"
           onDoubleClick={() => onDoubleClick(id)}
           onMouseDown={handleMouseDown("line")}

@@ -36,7 +36,7 @@ export default function DraggableObject({ iconKey, id, name, initialX, initialY,
             onMouseUp={handleDragEnd}
             onDoubleClick={() => onDoubleClick(id)}
         >
-            <img src={`/icons/objects/${iconKey}.png`} alt={iconKey} className="h-7"/>
+            <img src={`/icons/objects/${iconKey}.png`} alt={iconKey} className="h-9"/>
         </div>
     );
 }
