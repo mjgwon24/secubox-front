@@ -10,7 +10,7 @@ import { useAttack } from "@/app/AttackContext";
 
 export default function Home() {
   const [droppedItems, setDroppedItems] = useState([]);
-  const { isAttacking } = useAttack();
+  const { isAttacking, isPaused } = useAttack();
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "OBJECT",
@@ -87,6 +87,17 @@ export default function Home() {
           </p>
         ))}
       </div>
+
+        {isAttacking && (
+            <div className="absolute top-3 right-3 bg-[rgba(0,0,0,0.7)] text-white p-2 rounded-lg z-50">
+                <p className="text-xs font-semibold text-gray-300 pb-2 select-none">
+                    Attack Status
+                </p>
+                <p className="text-xs text-gray-400 select-none">
+                    {isPaused ? "Paused" : "Active"}
+                </p>
+            </div>
+        )}
 
       {droppedItems.map((item) =>
         item.name === "Fabric Net" ? (
