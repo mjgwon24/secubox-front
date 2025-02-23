@@ -108,7 +108,7 @@ export default function DraggableCable({id, initialX, initialY, onDoubleClick, d
           y1={start.y}
           x2={end.x}
           y2={end.y}
-          stroke={isAttacking ? "#ff3333" : "#C3C3C3"} // 공격 중이면 빨간색, 아니면 기본 색상
+          stroke={isAttacking && isStartConnected && isEndConnected ? "#ff3333" : "#C3C3C3"}
           strokeWidth="2"
           className={`cursor-move ${isAttacking ? "pointer-events-none" : "pointer-events-auto"} ${cableClass}`}
           onDoubleClick={() => onDoubleClick(id)}
