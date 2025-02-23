@@ -1,12 +1,14 @@
 "use client";
 
 import {useCallback, useEffect, useState} from "react";
+import {useAttack} from "@/app/AttackContext";
 
 export default function DraggableCable({id, initialX, initialY, onDoubleClick, droppedItems,}) {
     const [start, setStart] = useState({ x: initialX, y: initialY });
     const [end, setEnd] = useState({ x: initialX + 100, y: initialY + 100 });
     const [isStartConnected, setIsStartConnected] = useState(false);
     const [isEndConnected, setIsEndConnected] = useState(false);
+    const {isAttacking, isPaused} = useAttack();
 
     const DISTANCE_THRESHOLD = 30;
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -77,7 +79,14 @@ export default function DraggableCable({id, initialX, initialY, onDoubleClick, d
   const width = Math.max(10, Math.abs(end.x - start.x));
   const height = Math.max(10, Math.abs(end.y - start.y));
 
-  return (
+    const cableClass =
+        isAttacking && isStartConnected && isEndConnected
+            ? isPaused ? "cable-line paused" // 일시정지
+                : "cable-line active"       // 공격 진행 중
+                : "cable-line";             // 공격 중지 또는 연결되지 않은 경우
+
+
+    return (
     <>
       <div
         className="absolute"
@@ -99,9 +108,9 @@ export default function DraggableCable({id, initialX, initialY, onDoubleClick, d
           y1={start.y}
           x2={end.x}
           y2={end.y}
-          stroke="#C3C3C3"
+          stroke={isAttacking ? "#ff3333" : "#C3C3C3"} // 공격 중이면 빨간색, 아니면 기본 색상
           strokeWidth="2"
-          className="cursor-move pointer-events-auto"
+          className={`cursor-move ${isAttacking ? "pointer-events-none" : "pointer-events-auto"} ${cableClass}`}
           onDoubleClick={() => onDoubleClick(id)}
           onMouseDown={handleMouseDown("line")}
         />
@@ -113,7 +122,7 @@ export default function DraggableCable({id, initialX, initialY, onDoubleClick, d
           height="6"
           fill={isStartConnected ? "#1769ff" : "white"}
           stroke="black"
-          className="cursor-pointer pointer-events-auto"
+          className={`cursor-pointer ${isAttacking ? "pointer-events-none" : "pointer-events-auto"}`}
           onMouseDown={handleMouseDown("start")}
         />
 
@@ -124,7 +133,7 @@ export default function DraggableCable({id, initialX, initialY, onDoubleClick, d
           height="6"
           fill={isEndConnected ? "#1769ff" : "white"}
           stroke="black"
-          className="cursor-pointer pointer-events-auto"
+          className={`cursor-pointer ${isAttacking ? "pointer-events-none" : "pointer-events-auto"}`}
           onMouseDown={handleMouseDown("end")}
         />
       </svg>

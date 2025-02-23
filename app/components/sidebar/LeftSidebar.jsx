@@ -14,9 +14,7 @@ export const LeftSidebar = () => {
     { id: "server", name: "Server" },
     { id: "switch", name: "Switch" },
     { id: "cloud", name: "Cloud" },
-
     { id: "utm", name: "UTM" },
-
     { id: "internet", name: "Internet" },
     { id: "firewall", name: "Firewall" },
     { id: "gmail", name: "Gmail" },

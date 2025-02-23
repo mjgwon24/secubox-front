@@ -6,9 +6,11 @@ import DraggableObject from "@/app/components/DraggableObject";
 import DraggableCable from "@/app/components/DraggableCable";
 import { v4 as uuidv4 } from "uuid";
 import Resizable from "./components/sidebar/ResizableProps";
+import { useAttack } from "@/app/AttackContext";
 
 export default function Home() {
   const [droppedItems, setDroppedItems] = useState([]);
+  const { isAttacking } = useAttack();
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "OBJECT",
@@ -71,7 +73,9 @@ export default function Home() {
   return (
     <div
       ref={drop}
-      className={`w-full h-screen p-2 relative ${isOver ? "bg-gray-700" : ""}`}
+      className={`w-full h-screen p-2 relative ${
+          isOver ? "bg-gray-700" : ""
+      } ${isAttacking ? "pointer-events-none" : ""}`}
     >
       <div className="absolute top-3 left-3 bg-[rgba(0,0,0,0.7)] text-white p-2 rounded-lg z-50">
         <p className="text-xs font-semibold text-gray-300 pb-2 select-none">
