@@ -3,7 +3,8 @@ import { LeftSidebar } from "@/app/components/sidebar/LeftSidebar";
 import { RightSidebar } from "@/app/components/sidebar/RightSidebar";
 import { Header } from "@/app/components/header/Header";
 import { LogBar } from "@/app/components/log/LogBar";
-import {DndContext} from "@/app/dndContext";
+import { DndContext } from "@/app/dndContext";
+import { ModalProvider } from "@/app/ModalContext";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,19 +15,21 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-      <DndContext>
-        <div className="flex flex-col w-screen h-full min-h-screen">
-          <Header/>
-          <div className="flex flex-row justify-between content-height">
-            <LeftSidebar/>
-            <div className="flex flex-col justify-between w-full">
-              {children}
-              <LogBar/>
+        <ModalProvider>
+          <DndContext>
+            <div className="flex flex-col w-screen h-full min-h-screen">
+              <Header />
+              <div className="flex flex-row justify-between content-height">
+                <LeftSidebar />
+                <div className="flex flex-col justify-between w-full">
+                  {children}
+                  <LogBar />
+                </div>
+                <RightSidebar />
+              </div>
             </div>
-            <RightSidebar/>
-          </div>
-        </div>
-      </DndContext>
+          </DndContext>
+        </ModalProvider>
       </body>
     </html>
   );

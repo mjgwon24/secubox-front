@@ -6,8 +6,11 @@ import DraggableObject from "@/app/components/DraggableObject";
 import DraggableCable from "@/app/components/DraggableCable";
 import { v4 as uuidv4 } from "uuid";
 import Resizable from "./components/sidebar/ResizableProps";
+import { useModal } from "./ModalContext";
+import SmallModal from "./components/modal/SmallModal";
 
 export default function Home() {
+  const { isModalOpen, setIsModalOpen } = useModal();
   const [droppedItems, setDroppedItems] = useState([]);
 
   const [{ isOver }, drop] = useDrop(() => ({
@@ -98,12 +101,12 @@ export default function Home() {
           />
         ) : item.name === "LAN Cable" ? (
           <DraggableCable
-              key={item.id}
-              id={item.id}
-              initialX={item.x}
-              initialY={item.y}
-              onDoubleClick={() => handleRemoveItem(item.id)}
-              droppedItems={droppedItems}
+            key={item.id}
+            id={item.id}
+            initialX={item.x}
+            initialY={item.y}
+            onDoubleClick={() => handleRemoveItem(item.id)}
+            droppedItems={droppedItems}
           />
         ) : (
           <DraggableObject
@@ -118,6 +121,7 @@ export default function Home() {
           />
         )
       )}
+      {isModalOpen && <SmallModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 }

@@ -3,8 +3,10 @@ import { useState } from "react";
 import AttackButton from "./ui/rightSidebar/AttackButton";
 import DefenseToggle from "./ui/rightSidebar/DefenseToggle";
 import { Sliders } from "lucide-react";
+import { useModal } from "@/app/ModalContext";
 
 export const RightSidebar = () => {
+  const { setIsModalOpen } = useModal();
   const [attacks] = useState([
     { id: "ransomware", name: "Ransomware" },
     { id: "privilege-escalation", name: "Privilege Escalation" },
@@ -35,7 +37,11 @@ export const RightSidebar = () => {
       <div className="space-y-4 pl-6 pr-6">
         <div className="space-y-3">
           {attacks.map((attack) => (
-            <AttackButton key={attack.id} name={attack.name} />
+            <AttackButton
+              key={attack.id}
+              name={attack.name}
+              onClick={() => setIsModalOpen(true)}
+            />
           ))}
         </div>
       </div>
