@@ -1,133 +1,133 @@
 "use client";
 
-import { useDrag } from "react-dnd";
-import { useState, useEffect } from "react";
+import {useCallback, useEffect, useState} from "react";
 
-export default function DraggableCable({ id, initialX, initialY, onDoubleClick }) {
-    const [{ isDragging }, drag] = useDrag(() => ({
-        type: "CABLE",
-        item: { id },
-
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging()
-        })
-    }));
-
+export default function DraggableCable({id, initialX, initialY, onDoubleClick, droppedItems,}) {
     const [start, setStart] = useState({ x: initialX, y: initialY });
     const [end, setEnd] = useState({ x: initialX + 100, y: initialY + 100 });
+    const [isStartConnected, setIsStartConnected] = useState(false);
+    const [isEndConnected, setIsEndConnected] = useState(false);
 
-    const [draggingStart, setDraggingStart] = useState(false);
-    const [draggingEnd, setDraggingEnd] = useState(false);
-    const [draggingLine, setDraggingLine] = useState(false);
-
-    // 드래그 시작 이벤트
-    const handleMouseDown = (type) => (e) => {
-        e.stopPropagation();
-
-        if (type === "start") {
-            setDraggingStart((prev) => !prev);
-        }
-        if (type === "end") {
-            setDraggingEnd((prev) => !prev);
-        }
-        if (type === "line") {
-            console.log("handleMouseDown - line 실행됨");
-            setDraggingLine((prev) => !prev);
-            handleMouseMove(e);
-        }
-    };
-
-    const handleMouseMove = (e) => {
-        if (draggingStart) {
-            setStart(() => ({ x: e.clientX - 250, y: e.clientY - 75 }));
-        }
-        if (draggingEnd) {
-            setEnd(() => ({ x: e.clientX - 250, y: e.clientY - 75 }));
-        }
-        if (draggingLine) {
-            console.log("draggingLine: ", draggingLine);
-            console.log("handleMouseMove 실행됨");
-            const offsetX = e.movementX;
-            const offsetY = e.movementY;
-
-            setStart((prev) => ({ x: prev.x + offsetX, y: prev.y + offsetY }));
-            setEnd((prev) => ({ x: prev.x + offsetX, y: prev.y + offsetY }));
-        }
-    };
-
-
-    const handleMouseUp = () => {
-        console.log("handleMouseUp 실행됨");
-        setDraggingStart(false);
-        setDraggingEnd(false);
-        setDraggingLine(false);
-    };
+    const DISTANCE_THRESHOLD = 30;
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
     useEffect(() => {
-        console.log("[1] useEffect start");
+        const checkConnection = () => {
+            const isCloseToObject = (x, y) => {
+                return droppedItems.some(
+                    (item) =>
+                        item.name !== "Fabric Net" &&
+                        item.name !== "LAN Cable" &&
+                        Math.abs(item.x + 20 - x) < DISTANCE_THRESHOLD &&
+                        Math.abs(item.y + 20 - y) < DISTANCE_THRESHOLD
+                );
+            };
 
-        if (draggingStart || draggingEnd || draggingLine) {
-            console.log("[2] add event listener");
-            window.addEventListener("mousemove", handleMouseMove);
-            window.addEventListener("mouseup", handleMouseUp);
-        }
-
-        return () => {
-            console.log("remove event listener");
-            window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("mouseup", handleMouseUp);
+            setIsStartConnected(isCloseToObject(start.x, start.y));
+            setIsEndConnected(isCloseToObject(end.x, end.y));
         };
-    }, [draggingStart, draggingEnd, draggingLine]);
 
-    // 선이 차지하는 영역 크기 계산
-    const minX = Math.min(start.x, end.x);
-    const minY = Math.min(start.y, end.y);
-    const width = Math.abs(end.x - start.x);
-    const height = Math.abs(end.y - start.y);
+        checkConnection();
+    }, [start, end, droppedItems]);
 
-    return (
-        <div
-            ref={drag}
-            className="absolute"
-            style={{
-                left: `${minX}px`,
-                top: `${minY}px`,
-                width: `${width}px`,
-                height: `${height}px`,
-                pointerEvents: "auto"
-            }}
-            onDoubleClick={() => onDoubleClick(id)}
-        >
-            <svg className="absolute w-full h-full">
-                <line
-                    x1={start.x - minX}
-                    y1={start.y - minY}
-                    x2={end.x - minX}
-                    y2={end.y - minY}
-                    stroke="#C3C3C3"
-                    strokeWidth="2"
-                    className={`cursor-move ${isDragging ? "opacity-50" : ""}`}
-                    onMouseDown={handleMouseDown("line")}
-                />
+  const handleMove = useCallback((type, e) => {
+    const { clientX, clientY, movementX, movementY } = e;
 
-                <circle
-                    cx={start.x - minX}
-                    cy={start.y - minY}
-                    r="5"
-                    fill="blue"
-                    className="cursor-pointer"
-                    onMouseDown={handleMouseDown("start")}
-                />
+    const limitedX = clamp(clientX - 250, 0, window.innerWidth - 250 - 250);
+    const limitedY = clamp(clientY - 75, 0, window.innerHeight - 55 - 75);
 
-                <circle
-                    cx={end.x - minX}
-                    cy={end.y - minY}
-                    r="5"
-                    fill="red"
-                    className="cursor-pointer"
-                    onMouseDown={handleMouseDown("end")}
-                />
-            </svg>
-        </div>
+    setStart((prev) =>
+      type === "start"
+        ? { x: limitedX, y: limitedY }
+        : type === "line"
+        ? {
+            x: clamp(prev.x + movementX, 0, window.innerWidth - 340 - 250),
+            y: clamp(prev.y + movementY, 0, window.innerHeight - 55 - 75),
+          }
+        : prev
     );
+
+    setEnd((prev) =>
+      type === "end"
+        ? { x: limitedX, y: limitedY }
+        : type === "line"
+        ? {
+            x: clamp(prev.x + movementX, 0, window.innerWidth - 340 - 250),
+            y: clamp(prev.y + movementY, 0, window.innerHeight - 55 - 75),
+          }
+        : prev
+    );
+  }, []);
+
+  const handleMouseDown = (type) => (e) => {
+    e.stopPropagation();
+
+    const handleMouseMove = (event) => handleMove(type, event);
+    const handleMouseUp = () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+  };
+
+  const minX = Math.min(start.x, end.x);
+  const minY = Math.min(start.y, end.y);
+  const width = Math.max(10, Math.abs(end.x - start.x));
+  const height = Math.max(10, Math.abs(end.y - start.y));
+
+  return (
+    <>
+      <div
+        className="absolute"
+        style={{
+          left: `${minX}px`,
+          top: `${minY}px`,
+          width: `${width}px`,
+          height: `${height}px`,
+        }}
+        onDoubleClick={() => onDoubleClick(id)}
+      />
+
+      <svg
+        className="absolute z-10 pointer-events-none"
+        style={{ left: 0, top: 0, width: "100%", height: "100%" }}
+      >
+        <line
+          x1={start.x}
+          y1={start.y}
+          x2={end.x}
+          y2={end.y}
+          stroke="#C3C3C3"
+          strokeWidth="2"
+          className="cursor-move pointer-events-auto"
+          onDoubleClick={() => onDoubleClick(id)}
+          onMouseDown={handleMouseDown("line")}
+        />
+
+        <rect
+          x={start.x - 3}
+          y={start.y - 3}
+          width="6"
+          height="6"
+          fill={isStartConnected ? "#1769ff" : "white"}
+          stroke="black"
+          className="cursor-pointer pointer-events-auto"
+          onMouseDown={handleMouseDown("start")}
+        />
+
+        <rect
+          x={end.x - 3}
+          y={end.y - 3}
+          width="6"
+          height="6"
+          fill={isEndConnected ? "#1769ff" : "white"}
+          stroke="black"
+          className="cursor-pointer pointer-events-auto"
+          onMouseDown={handleMouseDown("end")}
+        />
+      </svg>
+    </>
+  );
 }

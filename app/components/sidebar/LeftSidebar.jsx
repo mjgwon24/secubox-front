@@ -6,18 +6,22 @@ import { v4 as uuidv4 } from "uuid";
 
 export const LeftSidebar = () => {
   const [objects] = useState([
-    { id: "router", name: "Router" },
-    { id: "switch", name: "Switch" },
-    { id: "cloud", name: "Cloud" },
     { id: "lan-cable", name: "LAN Cable" },
     { id: "fabric-net", name: "Fabric Net" },
     { id: "pc", name: "PC" },
-    { id: "utm", name: "UTM" },
+    { id: "attack-pc", name: "Attack PC" },
+    { id: "router", name: "Router" },
     { id: "server", name: "Server" },
+    { id: "switch", name: "Switch" },
+    { id: "cloud", name: "Cloud" },
+
+    { id: "utm", name: "UTM" },
+
     { id: "internet", name: "Internet" },
     { id: "firewall", name: "Firewall" },
     { id: "gmail", name: "Gmail" },
     { id: "google-drive", name: "Google Drive" },
+
   ]);
 
   return (
