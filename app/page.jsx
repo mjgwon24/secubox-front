@@ -6,9 +6,12 @@ import DraggableObject from "@/app/components/DraggableObject";
 import DraggableCable from "@/app/components/DraggableCable";
 import { v4 as uuidv4 } from "uuid";
 import Resizable from "./components/sidebar/ResizableProps";
+import { useModal } from "./ModalContext";
+import SmallModal from "./components/modal/SmallModal";
 import { useAttack } from "@/app/AttackContext";
 
 export default function Home() {
+  const { isModalOpen, setIsModalOpen } = useModal();
   const [droppedItems, setDroppedItems] = useState([]);
   const { isAttacking, isPaused } = useAttack();
 
@@ -73,9 +76,9 @@ export default function Home() {
   return (
     <div
       ref={drop}
-      className={`w-full h-screen p-2 relative ${
-          isOver ? "bg-gray-700" : ""
-      } ${isAttacking ? "pointer-events-none" : ""}`}
+      className={`w-full h-screen p-2 relative ${isOver ? "bg-gray-700" : ""} ${
+        isAttacking ? "pointer-events-none" : ""
+      }`}
     >
       <div className="absolute top-3 left-3 bg-[rgba(0,0,0,0.7)] text-white p-2 rounded-lg z-50">
         <p className="text-xs font-semibold text-gray-300 pb-2 select-none">
@@ -88,16 +91,16 @@ export default function Home() {
         ))}
       </div>
 
-        {isAttacking && (
-            <div className="absolute top-3 right-3 bg-[rgba(0,0,0,0.7)] text-white p-2 rounded-lg z-50">
-                <p className="text-xs font-semibold text-gray-300 pb-2 select-none">
-                    Attack Status
-                </p>
-                <p className="text-xs text-gray-400 select-none">
-                    {isPaused ? "Paused" : "Active"}
-                </p>
-            </div>
-        )}
+      {isAttacking && (
+        <div className="absolute top-3 right-3 bg-[rgba(0,0,0,0.7)] text-white p-2 rounded-lg z-50">
+          <p className="text-xs font-semibold text-gray-300 pb-2 select-none">
+            Attack Status
+          </p>
+          <p className="text-xs text-gray-400 select-none">
+            {isPaused ? "Paused" : "Active"}
+          </p>
+        </div>
+      )}
 
       {droppedItems.map((item) =>
         item.name === "Fabric Net" ? (
@@ -113,12 +116,12 @@ export default function Home() {
           />
         ) : item.name === "LAN Cable" ? (
           <DraggableCable
-              key={item.id}
-              id={item.id}
-              initialX={item.x}
-              initialY={item.y}
-              onDoubleClick={() => handleRemoveItem(item.id)}
-              droppedItems={droppedItems}
+            key={item.id}
+            id={item.id}
+            initialX={item.x}
+            initialY={item.y}
+            onDoubleClick={() => handleRemoveItem(item.id)}
+            droppedItems={droppedItems}
           />
         ) : (
           <DraggableObject
@@ -133,6 +136,7 @@ export default function Home() {
           />
         )
       )}
+      {isModalOpen && <SmallModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 }
