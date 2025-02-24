@@ -93,3 +93,26 @@ body {
     min-height: calc(100vh - 64px);
     max-height: calc(100vh - 64px);
 }
+
+.cable-line {
+    transition: stroke 0.3s ease;
+}
+
+.cable-line.active {
+    stroke-dasharray: 10;
+    animation: attack-animation 1s infinite linear;
+}
+
+.cable-line.paused {
+    stroke-dasharray: 10;
+    animation-play-state: paused;
+}
+
+@keyframes attack-animation {
+    0% {
+        stroke-dashoffset: 10;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
