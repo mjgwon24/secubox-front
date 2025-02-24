@@ -14,9 +14,7 @@ export const LeftSidebar = () => {
     { id: "server", name: "Server" },
     { id: "switch", name: "Switch" },
     { id: "cloud", name: "Cloud" },
-
     { id: "utm", name: "UTM" },
-
     { id: "internet", name: "Internet" },
     { id: "firewall", name: "Firewall" },
     { id: "gmail", name: "Gmail" },
@@ -27,7 +25,7 @@ export const LeftSidebar = () => {
   return (
     <div className="max-w-[250px] bg-[#1C1C1C] text-white space-y-8 border border-[#3C3C3C] overflow-y-auto custom-scrollbar ">
       <div className="bg-[#26292B] flex items-center justify-between px-4 py-3 border border-[#3C3C3C]">
-        <h2 className="text-[#D3D3D3] weight-600">Object</h2>
+        <h2 className="text-[#D3D3D3] weight-600 select-none">Object</h2>
       </div>
 
       <div className="px-4">
