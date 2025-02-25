@@ -1,7 +1,7 @@
 "use client";
 
 import { useDrop } from "react-dnd";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import DraggableObject from "@/app/components/DraggableObject";
 import DraggableCable from "@/app/components/DraggableCable";
 import { v4 as uuidv4 } from "uuid";
@@ -13,7 +13,28 @@ import { useAttack } from "@/app/AttackContext";
 export default function Home() {
   const { isModalOpen, setIsModalOpen } = useModal();
   const [droppedItems, setDroppedItems] = useState([]);
-  const { isAttacking, isPaused } = useAttack();
+  const { isAttacking, isPaused, isArranged, defaultItems } = useAttack();
+  const handleAddDefaultItems = () => {
+    setDroppedItems((prev) => [
+      ...prev,
+      ...defaultItems.map((item) => ({
+        ...item,
+        id: uuidv4(),
+        width: item.width,
+        height: item.height,
+      })),
+    ]);
+  };
+
+  useEffect(() => {
+    console.log("isArranged:", isArranged); // Debugging the value of isArranged
+    if (isArranged) {
+      setDroppedItems(() => []);
+      handleAddDefaultItems();
+    } else if (!isArranged) {
+      setDroppedItems(() => []);
+    }
+  }, [isArranged]);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "OBJECT",
@@ -110,19 +131,34 @@ export default function Home() {
             x={item.x}
             y={item.y}
             width={item.width || 100} // 기본 너비 설정
-            height={item.height || 100} // 기본 높이 설정
+            height={item.height | 100} // 기본 높이 설정
             onResize={handleResize}
             onDoubleClick={() => handleRemoveItem(item.id)}
           />
         ) : item.name === "LAN Cable" ? (
-          <DraggableCable
-            key={item.id}
-            id={item.id}
-            initialX={item.x}
-            initialY={item.y}
-            onDoubleClick={() => handleRemoveItem(item.id)}
-            droppedItems={droppedItems}
-          />
+          isArranged ? (
+            <DraggableCable
+              key={item.id}
+              id={item.id}
+              initialX={item.x}
+              initialY={item.y}
+              startX={item.startX}
+              startY={item.startY}
+              endX={item.endX}
+              endY={item.endY}
+              onDoubleClick={() => handleRemoveItem(item.id)}
+              droppedItems={droppedItems}
+            />
+          ) : (
+            <DraggableCable
+              key={item.id}
+              id={item.id}
+              initialX={item.x}
+              initialY={item.y}
+              onDoubleClick={() => handleRemoveItem(item.id)}
+              droppedItems={droppedItems}
+            />
+          )
         ) : (
           <DraggableObject
             key={item.id}
