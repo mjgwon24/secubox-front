@@ -29,6 +29,7 @@ export default function Home() {
   useEffect(() => {
     console.log("isArranged:", isArranged); // Debugging the value of isArranged
     if (isArranged) {
+      setDroppedItems(() => []);
       handleAddDefaultItems();
     } else if (!isArranged) {
       setDroppedItems(() => []);
@@ -129,8 +130,8 @@ export default function Home() {
             id={item.id}
             x={item.x}
             y={item.y}
-            width={item.width} // 기본 너비 설정
-            height={item.height} // 기본 높이 설정
+            width={item.width || 100} // 기본 너비 설정
+            height={item.height | 100} // 기본 높이 설정
             onResize={handleResize}
             onDoubleClick={() => handleRemoveItem(item.id)}
           />
