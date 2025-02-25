@@ -21,8 +21,7 @@ export default function DraggableCable({
   const { isAttacking, isPaused, isArranged } = useAttack();
 
   useEffect(() => {
-    if (isArranged) {
-      console.log(startX);
+    if (isArranged && startX != undefined) {
       setStart({ x: startX, y: startY });
       setEnd({ x: endX, y: endY });
       setIsEndConnected(true);
