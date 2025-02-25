@@ -1,26 +1,24 @@
 import { useEffect, useState } from "react";
-
+import { useAttack } from "@/app/AttackContext";
 export default function SmallModal({ onClose, name, check }) {
   const [trafficType, setTrafficType] = useState("");
   const [attackAmount, setAttackAmount] = useState("");
   const [botCount, setBotCount] = useState("");
+  const { clickedAttackId } = useAttack();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO 여기에 제출 로직을 추가
-    console.log({ trafficType, attackAmount, botCount });
+    // console.log({ trafficType, attackAmount, botCount });
     onClose();
   };
 
-  useEffect(() => {
-    console.log(name);
-    console.log(check);
-  }, []);
   return (
     <>
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
         <div className="relative bg-[#292E30] p-6 rounded-lg w-full max-w-md border border-[#9C9C9C] z-[51]">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-white text-xl font-bold">{name}</h2>
+            <h2 className="text-white text-xl font-bold">{clickedAttackId}</h2>
             <button
               className="text-white text-2xl hover:text-gray-300"
               onClick={onClose}

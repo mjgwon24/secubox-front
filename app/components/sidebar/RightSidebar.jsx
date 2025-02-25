@@ -4,15 +4,23 @@ import AttackButton from "./ui/rightSidebar/AttackButton";
 import DefenseToggle from "./ui/rightSidebar/DefenseToggle";
 import { Sliders } from "lucide-react";
 import { useModal } from "@/app/ModalContext";
+import { useAttack } from "@/app/AttackContext";
 
 export const RightSidebar = () => {
   const { setIsModalOpen } = useModal();
-  const [attacks] = useState([
-    { id: "ransomware", name: "Ransomware" },
-    { id: "privilege-escalation", name: "Privilege Escalation" },
-    { id: "ddos", name: "DDOS" },
-    { id: "mitm", name: "MITM" },
-  ]);
+  const { clickedAttackId, attacks, setClickedAttackId } = useAttack();
+
+  const handleAttackClick = (id) => {
+    if (clickedAttackId == id) {
+      console.log(clickedAttackId);
+      //setClickedAttackId(null);
+      setClickedAttackId(null);
+      setIsModalOpen(false);
+      return;
+    }
+    setClickedAttackId(id);
+    setIsModalOpen(true); // 클릭 시 모달 열기
+  };
 
   const [defenses, setDefenses] = useState([
     { id: "ips-ids", name: "IPS/IDS", enabled: false },
@@ -39,8 +47,10 @@ export const RightSidebar = () => {
           {attacks.map((attack) => (
             <AttackButton
               key={attack.id}
+              id={attack.id}
               name={attack.name}
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => handleAttackClick(attack.id)}
+              clicked={clickedAttackId === attack.id} // 클릭된 버튼만 스타일 적용
             />
           ))}
         </div>
