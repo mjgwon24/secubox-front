@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import { useAttack } from "@/app/AttackContext";
+
+/**
+ *
+ *
+ */
 export default function SmallModal({ onClose, name, check }) {
   const [trafficType, setTrafficType] = useState("");
   const [attackAmount, setAttackAmount] = useState("");
   const [botCount, setBotCount] = useState("");
-  const { clickedAttackId } = useAttack();
+  const { clickedAttackId, arrangeAttacks, setIsArranged } = useAttack();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsArranged(true);
+    console.log("test");
     // TODO 여기에 제출 로직을 추가
     // console.log({ trafficType, attackAmount, botCount });
     onClose();
@@ -45,7 +52,7 @@ export default function SmallModal({ onClose, name, check }) {
             </div>
             <div>
               <label htmlFor="attackAmount" className="block text-white mb-2">
-                공격량
+                공격량(pps)
               </label>
               <input
                 type="number"
@@ -73,6 +80,7 @@ export default function SmallModal({ onClose, name, check }) {
               <button
                 type="submit"
                 className="bg-[#1B1B1B] text-white px-4 py-2 rounded hover:bg-blue-700"
+                onClick={arrangeAttacks}
               >
                 save
               </button>

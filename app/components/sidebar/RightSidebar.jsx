@@ -8,12 +8,19 @@ import { useAttack } from "@/app/AttackContext";
 
 export const RightSidebar = () => {
   const { setIsModalOpen } = useModal();
-  const { clickedAttackId, attacks, setClickedAttackId } = useAttack();
+  const {
+    clickedAttackId,
+    attacks,
+    isArranged,
+    setIsArranged,
+    setClickedAttackId,
+  } = useAttack();
 
   const handleAttackClick = (id) => {
     if (clickedAttackId == id) {
       console.log(clickedAttackId);
       //setClickedAttackId(null);
+      setIsArranged(!isArranged);
       setClickedAttackId(null);
       setIsModalOpen(false);
       return;
