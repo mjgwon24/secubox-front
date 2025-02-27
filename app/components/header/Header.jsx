@@ -31,30 +31,6 @@ export const Header = () => {
         <div className="text-lg font-semibold">SecuBox</div>
         <div className="flex items-center gap-2">
 
-
-          {/*{!isAttacking ? (*/}
-          {/*    <button className="p-2 hover:bg-gray-700 rounded transition-colors" */}
-          {/*            onClick={startAttack}*/}
-          {/*            aria-label={isPlaying ? "Pause" : "Play"}>*/}
-          {/*      {isPlaying ? <Pause size={20} /> : <Play size={20} />}*/}
-          {/*    </button>*/}
-          {/*) : (*/}
-          {/*    <>*/}
-          {/*      {isPaused ? (*/}
-          {/*          <button className="bg-yellow-500 px-4 py-2 rounded" onClick={startAttack}>*/}
-          {/*            재개*/}
-          {/*          </button>*/}
-          {/*      ) : (*/}
-          {/*          <button className="bg-yellow-500 px-4 py-2 rounded" onClick={pauseAttack}>*/}
-          {/*            일시정지*/}
-          {/*          </button>*/}
-          {/*      )}*/}
-          {/*      <button className="bg-gray-500 px-4 py-2 rounded" onClick={stopAttack}>*/}
-          {/*        중지*/}
-          {/*      </button>*/}
-          {/*    </>*/}
-          {/*)}*/}
-
           {!isAttacking ? (
               <button className="p-2 hover:bg-gray-700 rounded transition-colors"
                       onClick={startAttack}
@@ -85,23 +61,6 @@ export const Header = () => {
                 </button>
               </>
           )}
-
-          {/*<button*/}
-          {/*    onClick={handlePlayPause}*/}
-          {/*    className="p-2 hover:bg-gray-700 rounded transition-colors"*/}
-          {/*    aria-label={isPlaying ? "Pause" : "Play"}*/}
-          {/*>*/}
-          {/*  {isPlaying ? <Pause size={20} /> : <Play size={20} />}*/}
-          {/*</button>*/}
-          {/*<button*/}
-          {/*  onClick={handleStop}*/}
-          {/*  className="p-2 hover:bg-gray-700 rounded transition-colors"*/}
-          {/*  aria-label="Stop"*/}
-          {/*>*/}
-          {/*  <Square size={20} />*/}
-          {/*</button>*/}
-
-
 
           <div className="w-px h-6 bg-gray-600 mx-2" />
           <button
