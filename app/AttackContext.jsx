@@ -119,6 +119,7 @@ export function AttackProvider({ children }) {
 
   const [clickedAttackId, setClickedAttackId] = useState(null);
   const [isArranged, setIsArranged] = useState(false);
+  const [lastEndObject, setLastEndObject] = useState(null);
 
   const startAttack = () => {
     setIsAttacking(true);
@@ -147,6 +148,8 @@ export function AttackProvider({ children }) {
         setClickedAttackId,
         defaultItems,
         isArranged,
+        lastEndObject,
+        setLastEndObject,
         setIsArranged,
         defaultItems,
       }}
