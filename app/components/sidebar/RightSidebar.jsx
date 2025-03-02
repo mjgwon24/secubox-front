@@ -17,6 +17,9 @@ export const RightSidebar = () => {
   } = useAttack();
 
   const handleAttackClick = (id) => {
+    if (id != "ddos") {
+      return;
+    }
     if (clickedAttackId == id) {
       console.log(clickedAttackId);
       //setClickedAttackId(null);
