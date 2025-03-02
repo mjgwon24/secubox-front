@@ -11,9 +11,25 @@ import SmallModal from "./components/modal/SmallModal";
 import { useAttack } from "@/app/AttackContext";
 
 export default function Home() {
-  const { isModalOpen, setIsModalOpen } = useModal();
+  const { isModalOpen, setIsModalOpen, setDone, isDone } = useModal();
   const [droppedItems, setDroppedItems] = useState([]);
-  const { isAttacking, isPaused, isArranged, defaultItems } = useAttack();
+  const {
+    isAttacking,
+    isPaused,
+    isArranged,
+    defaultItems,
+    clickedAttackId,
+    setClickedAttackId,
+  } = useAttack();
+  const handleCloseModal = () => {
+    if (clickedAttackId == "ddos") {
+      setIsModalOpen(false);
+      return;
+    }
+    setClickedAttackId(null);
+    setIsModalOpen(false);
+    setDone(!isDone);
+  };
   const handleAddDefaultItems = () => {
     setDroppedItems((prev) => [
       ...prev,
@@ -172,7 +188,7 @@ export default function Home() {
           />
         )
       )}
-      {isModalOpen && <SmallModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && <SmallModal onClose={handleCloseModal} />}
     </div>
   );
 }

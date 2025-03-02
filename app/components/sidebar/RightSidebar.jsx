@@ -7,7 +7,7 @@ import { useModal } from "@/app/ModalContext";
 import { useAttack } from "@/app/AttackContext";
 
 export const RightSidebar = () => {
-  const { setIsModalOpen } = useModal();
+  const { setIsModalOpen, setDone, isDone, isModalOpen } = useModal();
   const {
     clickedAttackId,
     attacks,
@@ -18,6 +18,8 @@ export const RightSidebar = () => {
 
   const handleAttackClick = (id) => {
     if (id != "ddos") {
+      setIsModalOpen(true);
+      setDone(true);
       return;
     }
     if (clickedAttackId == id) {
@@ -26,6 +28,7 @@ export const RightSidebar = () => {
       setIsArranged(!isArranged);
       setClickedAttackId(null);
       setIsModalOpen(false);
+      setDone(false);
       return;
     }
     setClickedAttackId(id);
