@@ -9,7 +9,7 @@ export const LogBar = () => {
   const { isAttacking } = useAttack();
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState(20);
-  const { logs, addLog } = useLog(); // 로그 배열 가져오기
+  const { logs, addLog, startDefense } = useLog(); // 로그 배열 가져오기
   const isDragging = useRef(false);
   const startY = useRef(0);
   const dragHandleRef = useRef(null);
@@ -19,7 +19,7 @@ export const LogBar = () => {
     if (isAttacking) {
       setIsOpen(true);
     }
-  }, [isAttacking, addLog]);
+  }, [isAttacking, addLog, startDefense]);
 
   /**
    * 로그창 리사이즈 핸들러
