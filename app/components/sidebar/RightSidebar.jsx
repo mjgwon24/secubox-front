@@ -43,7 +43,7 @@ export const RightSidebar = () => {
         defense.id === id ? { ...defense, enabled: !defense.enabled } : defense
       )
     );
-    startDefense();
+    //startDefense();
   };
 
   return (

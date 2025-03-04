@@ -6,7 +6,7 @@ import { useAttack } from "@/app/AttackContext";
 import { useLog } from "@/app/LogContext";
 
 export const LogBar = () => {
-  const { isAttacking } = useAttack();
+  const { isAttacking, isPaused } = useAttack();
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState(20);
   const { logs, addLog, startDefense, getColor } = useLog(); // 로그 배열 가져오기
@@ -19,7 +19,16 @@ export const LogBar = () => {
     if (isAttacking) {
       setIsOpen(true);
     }
-  }, [isAttacking, addLog, startDefense]);
+  }, [isAttacking, addLog]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      startDefense();
+    }, 3000);
+
+    // 언마운트 시 타이머를 정리해줍니다.
+    return () => clearTimeout(timer);
+  }, []);
 
   /**
    * 로그창 리사이즈 핸들러
