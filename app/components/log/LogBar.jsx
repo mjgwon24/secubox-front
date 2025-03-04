@@ -9,7 +9,7 @@ export const LogBar = () => {
   const { isAttacking } = useAttack();
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState(20);
-  const { logs, addLog, startDefense } = useLog(); // 로그 배열 가져오기
+  const { logs, addLog, startDefense, getColor } = useLog(); // 로그 배열 가져오기
   const isDragging = useRef(false);
   const startY = useRef(0);
   const dragHandleRef = useRef(null);
@@ -59,8 +59,33 @@ export const LogBar = () => {
     }
   }, [logs]);
 
+  const timeRegex = /^\[오(전|후) \d{1,2}:\d{2}:\d{2}\]/;
+
+  function highlightTime(log) {
+    // timeRegex로 시각 부분을 찾는다.
+    const match = log.match(timeRegex);
+    // 매칭 실패하면(시각 형식이 없으면) 전체를 그대로 반환
+    if (!match) {
+      return <>{log}</>;
+    }
+
+    // 매칭된 시간 부분
+    const timePart = match[0];
+    // 시간 부분 뒤의 나머지 문자열
+    const restPart = log.slice(timePart.length);
+
+    console.log(timePart);
+    return (
+      <>
+        <span style={{ color: "text-gray-500" }}>{timePart}</span>
+        {/* 시간 부분 이외는 그대로 */}
+        <span style={{ color: getColor(log) }}>{restPart}</span>
+      </>
+    );
+  }
+
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full z-50 x-50 y-5 flex flex-col">
       {/* 리사이즈 핸들 */}
       <div
         className="w-full h-2 bg-transparent mt-2 cursor-ns-resize relative z-10 top-1"
@@ -83,7 +108,7 @@ export const LogBar = () => {
       {isOpen && (
         <div
           ref={logContainerRef} // 자동 스크롤을 위한 ref
-          className="bg-[#1B1B1B] px-5 pt-5 pb-10 overflow-y-auto custom-scrollbar pr-8 min-h-[20vh] max-h-[40vh]"
+          className="bg-[#1B1B1B] z-50 x-50 y-50 px-5 pt-5 pb-10 overflow-y-auto custom-scrollbar pr-8 min-h-[20vh] max-h-[40vh]"
           style={{ height: `${height}vh` }}
         >
           {logs.length === 0 ? (
@@ -93,7 +118,7 @@ export const LogBar = () => {
           ) : (
             logs.map((log, index) => (
               <p key={index} className="text-[#D3D3D3] text-sm">
-                {log} {/* 단순히 string 출력 */}
+                {highlightTime(log)} {/* 단순히 string 출력 */}
               </p>
             ))
           )}

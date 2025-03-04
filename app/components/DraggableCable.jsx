@@ -86,8 +86,8 @@ export default function DraggableCable({
           Math.abs(item.x + 20 - x) < DISTANCE_THRESHOLD &&
           Math.abs(item.y + 20 - y) < DISTANCE_THRESHOLD
       );
-      console.log(`[DEBUG] 1. Found at (${x}, ${y}): ${found?.name}`);
-      addLog(`[DEBUG] 1. Found at (${x}, ${y}): ${found?.name}`);
+      // console.log(`[DEBUG] 1. Found at (${x}, ${y}): ${found?.name}`);
+      // addLog(`[DEBUG] 1. Found at (${x}, ${y}): ${found?.name}`);
       return found?.name;
     };
 
