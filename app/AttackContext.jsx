@@ -113,7 +113,7 @@ export function AttackProvider({ children }) {
       x: 168,
       y: 168,
       width: 542,
-      height: 431,
+      height: 350,
     },
   ];
 

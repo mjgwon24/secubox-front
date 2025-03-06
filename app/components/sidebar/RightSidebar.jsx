@@ -5,6 +5,7 @@ import DefenseToggle from "./ui/rightSidebar/DefenseToggle";
 import { Sliders } from "lucide-react";
 import { useModal } from "@/app/ModalContext";
 import { useAttack } from "@/app/AttackContext";
+import { useLog } from "@/app/LogContext";
 
 export const RightSidebar = () => {
   const { setIsModalOpen, setDone, isDone, isModalOpen } = useModal();
@@ -15,6 +16,7 @@ export const RightSidebar = () => {
     setIsArranged,
     setClickedAttackId,
   } = useAttack();
+  const { startDefense } = useLog();
 
   const handleAttackClick = (id) => {
     if (id != "ddos") {
@@ -47,6 +49,7 @@ export const RightSidebar = () => {
         defense.id === id ? { ...defense, enabled: !defense.enabled } : defense
       )
     );
+    //startDefense();
   };
 
   return (
